@@ -17,8 +17,11 @@
   },
   "homepage": "https://github.com/rengnareb77/GPT_BOT#readme",
   "dependencies": {
+    "@discordjs/builders": "^1.4.0",
+    "axios": "^1.2.1",
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
-    "openai": "^3.0.0"
+    "openai": "^3.0.0",
+    "sqlite3": "^5.1.4"
   }
 }

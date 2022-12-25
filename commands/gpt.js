@@ -1,5 +1,5 @@
 
-const { Client, Intents} = require('discord.js');
+const { Client,EmbedBuilder} = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const dotenv = require('dotenv');
 const apikey = process.env.OPENAI_KEY;
@@ -16,6 +16,7 @@ module.exports = {
 
         async execute(client,interaction) {
             const prompt = interaction.options.getString('texte');
+            interaction.reply({ content: "Génération en cours...", ephemeral: true });
             
             const axios = require('axios');
             const data = {
@@ -30,7 +31,18 @@ module.exports = {
             };
             axios.post('https://api.openai.com/v1/completions', data, config)
                 .then((response) => {
-                    interaction.reply(response.data.choices[0].text);
+
+                    const embed = new EmbedBuilder()
+                        .setColor(0x0099FF)
+                        .addFields({ name: prompt, value: response.data.choices[0].text, inline: true })
+                        .setTimestamp()
+                        .setFooter({ text: 'Texte généré par GPT-3'});                    
+
+                    interaction.editReply({ embeds: [embed] , ephemeral: false});
+                })
+                .catch((error) => {
+                    console.log(error);
+                    interaction.editReply({ content: 'Erreur lors de la génération du texte', ephemeral: true });
                 }
             );
             
